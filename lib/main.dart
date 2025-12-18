@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mydesign/bottom_navigation_bar/bottom_navigation_bar_screen.dart';
 import 'package:mydesign/login/login_screen.dart';
 import 'package:mydesign/my_app/cubit/focus_cubit.dart';
 import 'package:mydesign/my_app/signin_screen.dart';
@@ -25,7 +26,8 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         ),
         // home: const LoginScreen(),
-        home: const SigninScreen(),
+        // home: const SigninScreen(),
+        home: FloatingBottomNavBar(),
       ),
     );
   }
