@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lucide_flutter/lucide_flutter.dart';
 import 'package:mydesign/navigation_cubit.dart';
 
 void main() {
@@ -16,19 +17,18 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
+          scaffoldBackgroundColor: Colors.white,
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const MyHomePage(title: 'Flutter Demo Home Page'),
+        home: const MyHomePage(),
       ),
     );
   }
 }
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+  const MyHomePage({super.key});
 
   static const List<Widget> _widgetOptions = <Widget>[
     Text(
@@ -48,10 +48,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(title),
-      ),
+      appBar: AppBar(backgroundColor: Colors.white, elevation: 0),
       body: BlocBuilder<NavigationCubit, int>(
         builder: (context, selectedIndex) {
           return Center(child: _widgetOptions.elementAt(selectedIndex));
@@ -59,18 +56,46 @@ class MyHomePage extends StatelessWidget {
       ),
       bottomNavigationBar: BlocBuilder<NavigationCubit, int>(
         builder: (context, selectedIndex) {
+          // Data untuk item navigasi
+          final navItems = [
+            {'icon': LucideIcons.house, 'label': 'Home'},
+            {'icon': LucideIcons.mail, 'label': 'Pesan'},
+            {'icon': LucideIcons.user, 'label': 'Profil'},
+          ];
+
           return BottomNavigationBar(
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.message),
-                label: 'Pesan',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Profil',
-              ),
-            ],
+            backgroundColor: Colors.white,
+            elevation: 0,
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
+            items: List.generate(navItems.length, (index) {
+              final item = navItems[index];
+              final isSelected = index == selectedIndex;
+              return BottomNavigationBarItem(
+                label: '',
+                icon: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(item['icon'] as IconData),
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 250),
+                      curve: Curves.easeInOut,
+                      width: isSelected ? 55 : 0,
+                      child: ClipRect(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: Text(
+                            item['label'] as String,
+                            overflow: TextOverflow.clip,
+                            maxLines: 1,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }),
             currentIndex: selectedIndex,
             selectedItemColor: Colors.amber[800],
             onTap: (index) => context.read<NavigationCubit>().setIndex(index),
