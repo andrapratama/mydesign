@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mydesign/design1/design1.dart';
+import 'package:mydesign/design1/navigation_cubit.dart';
 
 void main() {
   runApp(const MyApp());
@@ -9,13 +12,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return BlocProvider(
+      create: (context) => NavigationCubit(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        // home: const MyHomePage(title: 'Flutter Demo Home Page'),
+        home: Design1(),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -33,9 +40,18 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[
-    Text('Halaman Home', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
-    Text('Halaman Pesan', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
-    Text('Halaman Profil', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+    Text(
+      'Halaman Home',
+      style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+    ),
+    Text(
+      'Halaman Pesan',
+      style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+    ),
+    Text(
+      'Halaman Profil',
+      style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+    ),
   ];
 
   void _onItemTapped(int index) {
@@ -51,23 +67,12 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
+      body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.message),
-            label: 'Pesan',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profil',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Pesan'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],
